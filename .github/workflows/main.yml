@@ -1,0 +1,36 @@
+on: ["push", "pull_request"]
+
+name: Coveralls test
+
+jobs:
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+
+    - uses: actions/checkout@v3
+    - name: Set up JDK 1.8
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'temurin'
+        java-version: 8.0.332+9
+        cache: 'maven'
+        
+    - name: Compile
+      run: mvn compile
+      
+    - name: Test
+      run: mvn test jacoco:report
+    
+    - name: Coveralls Token Setup
+      run: sed -i.bak 's/yourcoverallstoken/${{ secrets.COVERALL_TOKEN }}/g' pom.xml    
+    - name: Coveralls Submission
+      run: mvn coveralls:report
+      
+    - name: Package
+      run: mvn clean package
+    
+    - name: Remove Token
+      if: ${{ always() }}
+      run: if [ -f "pom.xml.bak" ]; then mv pom.xml.bak pom.xml; fi
