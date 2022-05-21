@@ -29,9 +29,15 @@ public class BillImplementation implements Bill {
             }
         }
 
-        return getMouseKeyboardPrice(map.get(EItem.itemType.MOUSE), map.get(EItem.itemType.KEYBOARD)) +
+        double tot = getMouseKeyboardPrice(map.get(EItem.itemType.MOUSE), map.get(EItem.itemType.KEYBOARD)) +
                 getProcessorsPrice(map.get(EItem.itemType.PROCESSOR)) +
                 getMotherboardPrice(map.get(EItem.itemType.MOTHERBOARD));
+
+        if (tot > 1000) {
+            tot *= 0.9;
+        }
+
+        return tot;
     }
 
     double getProcessorsPrice(List<EItem> processList) {

@@ -72,4 +72,12 @@ public class BillImplementationTest {
         }
         assertEquals(430.0, bill.getOrderPrice(itemsOrdered, user), 1e-15);
     }
+
+    @Test
+    public void testMilleE() throws BillException {
+        EItem tastiera = new EItem(itemType.KEYBOARD, 1001, "Tastiera");
+        itemsOrdered.add(tastiera);
+        
+        assertEquals(900.9, bill.getOrderPrice(itemsOrdered, user),1e-15);
+    }
 }
