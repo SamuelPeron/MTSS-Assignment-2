@@ -17,7 +17,6 @@ import it.unipd.mtss.model.User;
 public class BillImplementation implements Bill {
 
     public double getOrderPrice(List<EItem> itemsOrdered, User user) throws BillException {
-        double toReturn = 0.0;
         HashMap<EItem.itemType, ArrayList<EItem>> map = new HashMap<EItem.itemType, ArrayList<EItem>>();
 
         for (EItem x : itemsOrdered) {
@@ -30,12 +29,9 @@ public class BillImplementation implements Bill {
             }
         }
 
-        toReturn += getProcessorsPrice(map.get(EItem.itemType.PROCESSOR));
-        toReturn += getKeyboardPrice(map.get(EItem.itemType.KEYBOARD));
-        toReturn += getMousePrice(map.get(EItem.itemType.MOUSE));
-        toReturn += getMotherboardPrice(map.get(EItem.itemType.MOTHERBOARD));
-
-        return toReturn;
+        return getMouseKeyboardPrice(map.get(EItem.itemType.MOUSE), map.get(EItem.itemType.KEYBOARD)) +
+                getProcessorsPrice(map.get(EItem.itemType.PROCESSOR)) +
+                getMotherboardPrice(map.get(EItem.itemType.MOTHERBOARD));
     }
 
     double getProcessorsPrice(List<EItem> processList) {
@@ -50,30 +46,30 @@ public class BillImplementation implements Bill {
         return processList.stream().map((x) -> x.getPrice()).reduce(0.0, (a, b) -> a + b);
     }
 
-    double getKeyboardPrice(List<EItem> keyboardList) {
-        if (keyboardList == null || keyboardList.size() == 0) {
-            return 0.0;
-        }
-
-        return keyboardList.stream().map((x) -> x.getPrice()).reduce(0.0, (a, b) -> a + b);
-    }
-
-    double getMousePrice(List<EItem> mouseList) {
-        if (mouseList == null || mouseList.size() == 0) {
-            return 0.0;
-        }
-        if (mouseList.size() > 10) {
-            mouseList.stream().min(Comparator.comparing((EItem x) -> x.getPrice())).get().discount(1.0);
-        }
-
-        return mouseList.stream().map((x) -> x.getPrice()).reduce(0.0, (a, b) -> a + b);
-    }
-
     double getMotherboardPrice(List<EItem> motherboardList) {
         if (motherboardList == null || motherboardList.size() == 0) {
             return 0.0;
         }
-
         return motherboardList.stream().map((x) -> x.getPrice()).reduce(0.0, (a, b) -> a + b);
+    }
+
+    double getMouseKeyboardPrice(List<EItem> mouseList, List<EItem> keyboardList) {
+
+        ArrayList<EItem> all = new ArrayList<EItem>();
+        if (mouseList != null) {
+            all.addAll(mouseList);
+            if (mouseList.size() > 5) {
+                mouseList.stream().min(Comparator.comparing((EItem x) -> x.getPrice())).get().discount(0.5);
+            }
+        }
+
+        if (keyboardList != null) {
+            all.addAll(keyboardList);
+            if (mouseList != null && mouseList.size() != 0 && mouseList.size() == keyboardList.size()) {
+                all.stream().min(Comparator.comparing((EItem x) -> x.getPrice())).get().discount(1.0);
+            }
+        }
+
+        return all.stream().map((x) -> x.getPrice()).reduce(0.0, (a, b) -> a + b);
     }
 }
