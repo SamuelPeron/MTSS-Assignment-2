@@ -18,11 +18,6 @@ public class EItem {
         type = tipo;
         price = prezzo;
         name = nome;
-        if (price >= 0.0D) {
-            this.price = prezzo;
-        } else {
-            throw new IllegalArgumentException("Il prezzo deve essere maggiore 0");
-        }
     }
 
     public itemType getType() {
@@ -37,4 +32,10 @@ public class EItem {
     public String getName() {
         return name;
     }
+
+    public void discount(double d) {
+
+        this.price *= (1 - d);
+    }
+
 }
