@@ -44,4 +44,13 @@ public class BillImplementationTest {
         assertEquals(110.0, bill.getOrderPrice(itemsOrdered, user), 1e-15);
     }
 
+    @Test
+    public void testProcessorDiscount() throws BillException {
+
+        for (int i = 0; i < 10; i++) {
+            itemsOrdered.add(new EItem(itemType.PROCESSOR, 10, "processor"));
+        }
+
+        assertEquals(95.0, bill.getOrderPrice(itemsOrdered, user), 1e-15);
+    }
 }
