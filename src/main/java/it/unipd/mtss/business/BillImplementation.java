@@ -17,6 +17,9 @@ import it.unipd.mtss.model.User;
 public class BillImplementation implements Bill {
 
     public double getOrderPrice(List<EItem> itemsOrdered, User user) throws BillException {
+        if (itemsOrdered.size() > 30) {
+            throw new BillException("Non possono essereci piu di 30 elementi");
+        }
         HashMap<EItem.itemType, ArrayList<EItem>> map = new HashMap<EItem.itemType, ArrayList<EItem>>();
 
         for (EItem x : itemsOrdered) {
