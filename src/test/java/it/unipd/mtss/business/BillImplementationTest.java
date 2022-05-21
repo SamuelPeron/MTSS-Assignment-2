@@ -77,7 +77,14 @@ public class BillImplementationTest {
     public void testMilleE() throws BillException {
         EItem tastiera = new EItem(itemType.KEYBOARD, 1001, "Tastiera");
         itemsOrdered.add(tastiera);
-        
-        assertEquals(900.9, bill.getOrderPrice(itemsOrdered, user),1e-15);
+
+        assertEquals(900.9, bill.getOrderPrice(itemsOrdered, user), 1e-15);
+    }
+
+    @Test
+    public void testDieciE() throws BillException {
+        EItem tastiera = new EItem(itemType.KEYBOARD, 9, "Tastiera");
+        itemsOrdered.add(tastiera);
+        assertEquals(11.0, bill.getOrderPrice(itemsOrdered, user), 1e-15);
     }
 }

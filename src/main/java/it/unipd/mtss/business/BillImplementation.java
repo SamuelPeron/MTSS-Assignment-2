@@ -35,6 +35,8 @@ public class BillImplementation implements Bill {
 
         if (tot > 1000) {
             tot *= 0.9;
+        } else if (tot < 10) {
+            return tot + 2;
         }
 
         return tot;
