@@ -82,6 +82,20 @@ public class BillImplementationTest {
     }
 
     @Test
+    public void test30elementi() {
+
+        for (int i = 0; i < 31; i++) {
+            itemsOrdered.add(new EItem(itemType.KEYBOARD, 110, "Razer"));
+        }
+        try {
+            bill.getOrderPrice(itemsOrdered, user);
+        } catch (BillException e) {
+
+            assertEquals("Non possono essereci piu di 30 elementi", e.getMessage());
+        }
+    }
+
+    @Test
     public void testDieciE() throws BillException {
         EItem tastiera = new EItem(itemType.KEYBOARD, 9, "Tastiera");
         itemsOrdered.add(tastiera);
