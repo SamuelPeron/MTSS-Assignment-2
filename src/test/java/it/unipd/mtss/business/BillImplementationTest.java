@@ -53,4 +53,14 @@ public class BillImplementationTest {
 
         assertEquals(95.0, bill.getOrderPrice(itemsOrdered, user), 1e-15);
     }
+
+    @Test
+    public void testMouseDiscount() throws BillException {
+
+        for (int i = 0; i < 11; i++) {
+            itemsOrdered.add(new EItem(itemType.MOUSE, 10, "mouse"));
+        }
+
+        assertEquals(100.0, bill.getOrderPrice(itemsOrdered, user), 1e-15);
+    }
 }
